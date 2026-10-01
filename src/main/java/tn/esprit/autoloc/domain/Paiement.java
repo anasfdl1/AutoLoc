@@ -26,4 +26,6 @@ public class Paiement {
 
     @Convert(converter = ModePaiementConverter.class)
     private ModePaiement modePaiement;
+    @ManyToOne
+    Contrat contrat;
 }

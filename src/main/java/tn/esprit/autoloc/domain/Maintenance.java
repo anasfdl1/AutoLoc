@@ -24,4 +24,6 @@ public class Maintenance {
     private LocalDate dateFin;
 
     private String description;
+    @ManyToOne
+    Vehicule vehicule;
 }
