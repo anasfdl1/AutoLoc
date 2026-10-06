@@ -27,10 +27,11 @@ public class Contrat {
     private BigDecimal montantTotal;
 
     private boolean valide;
+
     @OneToOne
-    Reservation reservation;
+    @JoinColumn(name = "reservation_id", unique = true)
+    private Reservation reservation;
+
     @OneToMany(mappedBy = "contrat", cascade = CascadeType.ALL)
-    List<Paiement> paiements = new ArrayList<>();
-
-
+    private List<Paiement> paiements = new ArrayList<>();
 }

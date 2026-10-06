@@ -26,6 +26,8 @@ public class Paiement {
 
     @Convert(converter = ModePaiementConverter.class)
     private ModePaiement modePaiement;
+
     @ManyToOne
-    Contrat contrat;
+    @JoinColumn(name = "contrat_id")
+    private Contrat contrat;
 }
