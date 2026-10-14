@@ -54,3 +54,25 @@ garantit pas l’absence de tout défaut fonctionnel.
   et orphanRemoval.
 - Les paiements sont créés ou retirés via leur contrat
   dans le code métier.
+- ## Vérification des cascades
+
+Les vérifications réalisées sur un contrat de démonstration
+et deux paiements ont réussi :
+
+- Cascade PERSIST : sauvegarder le contrat enregistre ses paiements.
+- orphanRemoval : retirer un paiement de la collection du contrat
+  le supprime en base.
+- Cascade REMOVE : supprimer le contrat supprime le paiement restant.
+
+Chaque résultat a été vérifié avec existsById().
+La collection LAZY a été manipulée dans une transaction.
+## Démonstration CRUD
+
+Une démonstration exécutée avec CommandLineRunner crée un contrat
+de test, le lit, modifie son montant de 500.00 à 750.00,
+puis le supprime.
+
+La modification est vérifiée par une nouvelle lecture en base.
+La suppression est vérifiée avec existsById(), qui retourne false.
+
+Les logs permettent d’observer INSERT, SELECT, UPDATE et DELETE.
