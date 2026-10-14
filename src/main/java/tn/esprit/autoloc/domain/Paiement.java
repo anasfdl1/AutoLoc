@@ -21,13 +21,12 @@ public class Paiement {
     private Long idPaiement;
 
     private BigDecimal montant;
-
     private LocalDate datePaiement;
 
     @Convert(converter = ModePaiementConverter.class)
     private ModePaiement modePaiement;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "contrat_id")
     private Contrat contrat;
 }

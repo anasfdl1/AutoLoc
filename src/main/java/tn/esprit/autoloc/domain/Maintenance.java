@@ -20,12 +20,10 @@ public class Maintenance {
     private Long idMaintenance;
 
     private LocalDate dateDebut;
-
     private LocalDate dateFin;
-
     private String description;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vehicule_id")
     private Vehicule vehicule;
 }

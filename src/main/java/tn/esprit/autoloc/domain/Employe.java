@@ -18,13 +18,12 @@ public class Employe {
     private Long idEmploye;
 
     private String nom;
-
     private String prenom;
 
     @Enumerated(EnumType.STRING)
     private RoleEmploye role;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "agence_id")
     private Agence agence;
 }

@@ -20,20 +20,23 @@ public class Reservation {
     private Long idReservation;
 
     private LocalDate dateDebut;
-
     private LocalDate dateFin;
 
     @Enumerated(EnumType.STRING)
     private StatutReservation statut;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vehicule_id")
     private Vehicule vehicule;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id")
     private Client client;
 
-    @OneToOne(mappedBy = "reservation")
+    @OneToOne(
+            mappedBy = "reservation",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY
+    )
     private Contrat contrat;
 }
