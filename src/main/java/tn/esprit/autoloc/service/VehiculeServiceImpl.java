@@ -5,6 +5,9 @@ import org.springframework.stereotype.Service;
 import tn.esprit.autoloc.domain.Vehicule;
 import tn.esprit.autoloc.exception.ResourceNotFoundException;
 import tn.esprit.autoloc.repository.IVehiculeRepository;
+import jakarta.transaction.Transactional;
+import tn.esprit.autoloc.domain.Equipement;
+import tn.esprit.autoloc.repository.IEquipementRepository;
 
 import java.util.List;
 
@@ -13,6 +16,7 @@ import java.util.List;
 public class VehiculeServiceImpl implements IVehiculeService {
 
     private final IVehiculeRepository vehiculeRepository;
+    private final IEquipementRepository equipementRepository;
 
     @Override
     public Vehicule create(Vehicule vehicule) {
@@ -71,5 +75,26 @@ public class VehiculeServiceImpl implements IVehiculeService {
             throw new IllegalArgumentException(
                     "Le tarif journalier ne doit pas être négatif.");
         }
+    }
+    @Override
+    @Transactional
+    public Vehicule affecterEquipement(Long idVehicule, Long idEquipement) {
+        Vehicule v = vehiculeRepository.findById(idVehicule).get();
+        Equipement e = equipementRepository.findById(idEquipement).get();
+
+        v.getEquipements().add(e);
+
+        return vehiculeRepository.save(v);
+    }
+
+    @Override
+    @Transactional
+    public Vehicule desaffecterEquipement(Long idVehicule, Long idEquipement) {
+        Vehicule v = vehiculeRepository.findById(idVehicule).get();
+        Equipement e = equipementRepository.findById(idEquipement).get();
+
+        v.getEquipements().remove(e);
+
+        return vehiculeRepository.save(v);
     }
 }

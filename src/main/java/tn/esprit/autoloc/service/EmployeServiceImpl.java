@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import tn.esprit.autoloc.domain.Employe;
 import tn.esprit.autoloc.exception.ResourceNotFoundException;
 import tn.esprit.autoloc.repository.IEmployeRepository;
+import tn.esprit.autoloc.repository.IAgenceRepository;
+import tn.esprit.autoloc.domain.Agence;
 
 import java.util.List;
 
@@ -13,6 +15,7 @@ import java.util.List;
 public class EmployeServiceImpl implements IEmployeService {
 
     private final IEmployeRepository employeRepository;
+    private final IAgenceRepository agenceRepository;
 
     @Override
     public Employe create(Employe employe) {
@@ -58,6 +61,13 @@ public class EmployeServiceImpl implements IEmployeService {
         employeRepository.deleteById(id);
     }
 
+    @Override
+    public Employe desaffecterEmploye(Long idEmploye) {
+        Employe e =employeRepository.findById(idEmploye).get();
+        e.setAgence(null);
+        return employeRepository.save(e);
+    }
+
     private void verifierEmploye(Employe employe) {
         if (employe.getNom() == null || employe.getNom().isBlank()) {
             throw new IllegalArgumentException(
@@ -68,5 +78,12 @@ public class EmployeServiceImpl implements IEmployeService {
             throw new IllegalArgumentException(
                     "Le rôle de l'employé est obligatoire.");
         }
+    }
+    @Override
+    public Employe affecterAgence(Long idEmploye, Long idAgence) {
+        Employe e = employeRepository.findById(idEmploye).get();
+        Agence a = agenceRepository.findById(idAgence).get();
+        e.setAgence(a);
+        return employeRepository.save(e);
     }
 }

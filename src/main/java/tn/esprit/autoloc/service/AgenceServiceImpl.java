@@ -5,6 +5,11 @@ import org.springframework.stereotype.Service;
 import tn.esprit.autoloc.domain.Agence;
 import tn.esprit.autoloc.exception.ResourceNotFoundException;
 import tn.esprit.autoloc.repository.IAgenceRepository;
+import jakarta.transaction.Transactional;
+import tn.esprit.autoloc.domain.Vehicule;
+import tn.esprit.autoloc.repository.IVehiculeRepository;
+
+
 
 import java.util.List;
 
@@ -13,6 +18,7 @@ import java.util.List;
 public class AgenceServiceImpl implements IAgenceService {
 
     private final IAgenceRepository agenceRepository;
+    private final IVehiculeRepository vehiculeRepository;
 
     @Override
     public Agence create(Agence agence) {
@@ -59,6 +65,20 @@ public class AgenceServiceImpl implements IAgenceService {
         agenceRepository.deleteById(id);
     }
 
+    @Override
+    @Transactional
+    public Agence ajouterAgenceEtAffecterVehicules(Agence agence) {
+        verifierAgence(agence);
+
+        Agence a = agenceRepository.save(agence);
+
+        for (Vehicule v : agence.getVehicules()) {
+            v.setAgence(a);
+            vehiculeRepository.save(v);
+        }
+
+        return a;
+    }
     private void verifierAgence(Agence agence) {
         if (agence.getNom() == null || agence.getNom().isBlank()) {
             throw new IllegalArgumentException(
